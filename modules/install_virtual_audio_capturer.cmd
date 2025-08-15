@@ -1,0 +1,1 @@
+recorder-devices-0.12.10-setup.exe /nocancel /closeapplications /norestart /sp /verysilent /log
