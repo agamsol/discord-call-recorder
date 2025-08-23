@@ -28,7 +28,9 @@ log = create_logger(
 
 app = Flask(__name__)
 CORS(app)
-recorder = Recorder()
+discord_stable = Recorder()
+discord_ptb = Recorder()
+discord_canary = Recorder()
 
 
 @app.before_request
@@ -93,19 +95,52 @@ def flask_join():
 
     body = request.get_json()
 
-    recorder.start_recording(body)
+    build_type = body.get("build")
 
-    return 'OK', 200
+    match build_type:
+
+        case "stable":
+
+            discord_stable.start_recording(body)
+            return 'OK', 200
+
+        case "ptb":
+
+            discord_ptb.start_recording(body)
+            return 'OK', 200
+
+        case "canary":
+
+            discord_canary.start_recording(body)
+            return 'OK', 200
+
+    return 'INVALID_BUILD_SPECIFIED', 400
 
 
 @app.route("/leave", methods=["POST", "OPTIONS"])
 def flask_leave():
 
     body = request.get_json()
-    print("--- LEAVE EVENT RECEIVED ---")
-    print(body)
-    recorder.stop_recording()
-    return 'OK', 200
+    build_type = body.get("build")
+
+    match build_type:
+
+        case "stable":
+
+            discord_stable.stop_recording()
+            return 'OK', 200
+
+        case "ptb":
+
+            discord_ptb.stop_recording()
+            return 'OK', 200
+
+        case "canary":
+
+            discord_canary.stop_recording()
+            return 'OK', 200
+
+    return 'INVALID_BUILD_SPECIFIED', 400
 
 
 if __name__ == "__main__":

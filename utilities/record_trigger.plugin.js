@@ -5,9 +5,8 @@
  *
  * HOW TO USE MANUALLY:
  * 1. Locate and open your Discord `index.js` file in the `discord_desktop_core` module.
- * 2. Copy and paste this ENTIRE code block at the VERY END of the file.
+ * 2. Copy and paste this ENTIRE code block at the VERY END of the file. (or require() its full file path)
  * 3. Save the file and restart Discord completely.
- * 4. The script will now survive reloads.
  */
 const { app, BrowserWindow} = require("electron");
 
