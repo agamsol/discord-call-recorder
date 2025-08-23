@@ -86,12 +86,12 @@ const listenerScript = `
                 }
                 if (channelNameElement) channelName = channelNameElement.textContent;
 
-                sendWebhook('join', { event: 'JOIN', server_id: serverId, channel_id: channelId, channel_name: channelName, timestamp: Date.now() });
+                sendWebhook('join', { build: window.GLOBAL_ENV.RELEASE_CHANNEL, event: 'JOIN', server_id: serverId, channel_id: channelId, channel_name: channelName, timestamp: Date.now() });
                 lastChannelId = channelId;
             } else {
                 const indicator = document.getElementById(INDICATOR_ID);
                 if (indicator) indicator.remove();
-                sendWebhook('leave', { event: 'LEAVE', channel_id: lastChannelId, timestamp: Date.now() });
+                sendWebhook('leave', { build: window.GLOBAL_ENV.RELEASE_CHANNEL, event: 'LEAVE', channel_id: lastChannelId, timestamp: Date.now() });
                 lastChannelId = null;
             }
             wasConnected = isConnected;
@@ -127,7 +127,7 @@ const listenerScript = `
         document.head.appendChild(styleSheet);
     }
 
-    const WEBHOOK_BASE_URL = 'http://localhost:49151';
+    const WEBHOOK_BASE_URL = 'http://127.0.0.1:49151';
     function sendWebhook(endpoint, data) {
         fetch(\`\${WEBHOOK_BASE_URL}/\${endpoint}\`, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }, body: JSON.stringify(data) })
             .then(response => { if (!response.ok) console.error(\`[VoiceListener] Backend error for '\${endpoint}': \${response.status}\`); })

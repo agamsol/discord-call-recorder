@@ -93,12 +93,14 @@ class Recorder:
         ]
 
         log.info(f"""Starting to record -> Listening to devices
+\tDiscord Build: {body.get('build')}
 \tGuild ID: {body.get('server_id') if body.get('server_id') != "@me" else "PM Or Group DM"}
 \tChannel ID: {body.get('channel_id')}
 \tChannel Name: {body.get('channel_name')}
 \tOutput File: {output_filename}""")
 
         recording_information = {
+            "build": body.get('build'),
             "timestamp": timestamp,
             "guild_id": guild_id,
             "channel_id": channel_id,
