@@ -1,0 +1,62 @@
+﻿2025-08-23 13:44:21.965   Log opened. (Time zone: UTC+03:00)
+2025-08-23 13:44:21.965   Setup version: Inno Setup version 6.3.1
+2025-08-23 13:44:21.967   Original Setup EXE: \\192.168.1.169\local\programs\Python\discord-call-recorder\bin\recorder-devices-0.12.10-setup.exe
+2025-08-23 13:44:21.968   Setup command line: /SL5="$970C6C,844339,776192,\\192.168.1.169\local\programs\Python\discord-call-recorder\bin\recorder-devices-0.12.10-setup.exe" /nocancel /sp /verysilent /log="virtual-device-capturer.log" /norestart /restartexitcode=55 /nocloseapplications
+2025-08-23 13:44:21.968   Windows version: 10.0.26100
+2025-08-23 13:44:21.968   Windows architecture: x64 (64-bit)
+2025-08-23 13:44:21.968   Machine types supported by system: x86 x64
+2025-08-23 13:44:21.968   User privileges: Administrative
+2025-08-23 13:44:21.970   Administrative install mode: Yes
+2025-08-23 13:44:21.971   Install mode root key: HKEY_LOCAL_MACHINE
+2025-08-23 13:44:21.972   64-bit install mode: Yes
+2025-08-23 13:44:21.972   Created protected temporary directory: C:\Users\Agam\AppData\Local\Temp\is-T39P6.tmp
+2025-08-23 13:44:22.051   Starting the installation process.
+2025-08-23 13:44:22.053   Directory for uninstall files: C:\Program Files\Recorder Devices for ShareX
+2025-08-23 13:44:22.057   Will append to existing uninstall log: C:\Program Files\Recorder Devices for ShareX\unins000.dat
+2025-08-23 13:44:22.059   -- File entry --
+2025-08-23 13:44:22.059   Dest filename: C:\Program Files\Recorder Devices for ShareX\unins000.exe
+2025-08-23 13:44:22.059   Non-default bitness: 32-bit
+2025-08-23 13:44:22.059   Time stamp of our file: 2025-08-23 13:44:21.775
+2025-08-23 13:44:22.059   Dest file exists.
+2025-08-23 13:44:22.059   Time stamp of existing file: 2025-08-23 13:21:31.038
+2025-08-23 13:44:22.059   Version of our file: 51.1052.0.0
+2025-08-23 13:44:22.059   Version of existing file: 51.1052.0.0
+2025-08-23 13:44:22.059   Installing the file.
+2025-08-23 13:44:22.062   Leaving temporary file in place for now.
+2025-08-23 13:44:22.062   -- File entry --
+2025-08-23 13:44:22.062   Dest filename: C:\Program Files\Recorder Devices for ShareX\screen-capture-recorder-x64.dll
+2025-08-23 13:44:22.064   Time stamp of our file: 2022-12-03 05:04:08.000
+2025-08-23 13:44:22.064   Dest file exists.
+2025-08-23 13:44:22.064   Time stamp of existing file: 2022-12-03 05:04:08.000
+2025-08-23 13:44:22.064   Version of our file: (none)
+2025-08-23 13:44:22.064   Version of existing file: (none)
+2025-08-23 13:44:22.064   Installing the file.
+2025-08-23 13:44:22.067   Successfully installed the file.
+2025-08-23 13:44:22.067   Will register the file (a DLL/OCX) later.
+2025-08-23 13:44:22.067   -- File entry --
+2025-08-23 13:44:22.067   Dest filename: C:\Program Files\Recorder Devices for ShareX\virtual-audio-capturer-x64.dll
+2025-08-23 13:44:22.067   Time stamp of our file: 2022-12-03 05:04:08.000
+2025-08-23 13:44:22.067   Dest file exists.
+2025-08-23 13:44:22.067   Time stamp of existing file: 2022-12-03 05:04:08.000
+2025-08-23 13:44:22.067   Version of our file: (none)
+2025-08-23 13:44:22.067   Version of existing file: (none)
+2025-08-23 13:44:22.067   Installing the file.
+2025-08-23 13:44:22.069   Successfully installed the file.
+2025-08-23 13:44:22.069   Will register the file (a DLL/OCX) later.
+2025-08-23 13:44:22.069   Registering 64-bit DLL/OCX: C:\Program Files\Recorder Devices for ShareX\screen-capture-recorder-x64.dll
+2025-08-23 13:44:22.074   Spawning 64-bit RegSvr32: "C:\WINDOWS\system32\regsvr32.exe" /s "C:\Program Files\Recorder Devices for ShareX\screen-capture-recorder-x64.dll"
+2025-08-23 13:44:22.134   Registration successful.
+2025-08-23 13:44:22.134   Registering 64-bit DLL/OCX: C:\Program Files\Recorder Devices for ShareX\virtual-audio-capturer-x64.dll
+2025-08-23 13:44:22.137   Spawning 64-bit RegSvr32: "C:\WINDOWS\system32\regsvr32.exe" /s "C:\Program Files\Recorder Devices for ShareX\virtual-audio-capturer-x64.dll"
+2025-08-23 13:44:22.196   Registration successful.
+2025-08-23 13:44:22.196   Saving uninstall information.
+2025-08-23 13:44:22.196   Renaming uninstaller.
+2025-08-23 13:44:22.197   Deleting uninstall key left over from previous administrative 64-bit install.
+2025-08-23 13:44:22.199   Creating new uninstall key: HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Uninstall\Recorder Devices for ShareX_is1
+2025-08-23 13:44:22.199   Writing uninstall key values.
+2025-08-23 13:44:22.199   Detected previous non administrative install? No
+2025-08-23 13:44:22.199   Detected previous administrative 32-bit install? No
+2025-08-23 13:44:22.202   Installation process succeeded.
+2025-08-23 13:44:22.202   Need to restart Windows? No
+2025-08-23 13:44:22.206   Deinitializing Setup.
+2025-08-23 13:44:22.211   Log closed.

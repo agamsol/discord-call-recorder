@@ -1,5 +1,7 @@
 import os
-import subprocess
+import sys
+import time
+import ctypes
 from utilities.CustomLogger import create_logger
 
 log = create_logger(
@@ -29,6 +31,60 @@ discord_builds = {
         "executable": "DiscordCanary.exe"
     }
 }
+
+
+def request_elevation(command_line: list) -> bool:
+    """
+    Executes a command with administrator privileges via a UAC prompt.
+
+    This function leverages the 'runas' verb in the Windows ShellExecuteW API
+    call, which is the standard method for requesting elevation.
+
+    Args:
+        command_line: A list containing the executable path and its arguments.
+
+    Returns:
+        True if the ShellExecuteW call was successfully dispatched (return code > 32).
+        False if the call failed, which can occur if the user denies the UAC
+        prompt or if other system errors are encountered.
+    """
+    if not command_line:
+        log.error("Cannot request elevation for an empty command.")
+        return False
+
+    executable = command_line[0]
+    params = " ".join(command_line[1:])
+
+    try:
+        ret_code = ctypes.windll.shell32.ShellExecuteW(
+            None,
+            "runas",
+            executable,
+            params,
+            None,
+            1
+        )
+    except Exception as e:
+        log.error(f"An unexpected error occurred while calling ShellExecuteW: {e}")
+        return False
+
+    log.debug(f"ShellExecuteW returned code: {ret_code}")
+
+    if ret_code == 55:
+
+        log.critical("""You must restart the computer to complete the virtual-audio-capturer driver installation\notherwise recordings may not work properly.""")
+
+    if ret_code > 32:
+        log.info("Elevation request was successfully dispatched.")
+        return True
+
+    else:
+
+        log.error(
+            f"ShellExecuteW call failed with error code {ret_code}. "
+            f"The user may have denied the UAC prompt."
+        )
+        return False
 
 
 def inject_to_discord(install_builds: list = None):
@@ -80,17 +136,44 @@ def inject_to_discord(install_builds: list = None):
 
     return
 
+
 # 2. Add to startup
 def add_to_startup():
     pass
 
+
 # 3. Install dependencies and drivers
 def install_dependencies():
 
-    status_code = subprocess.run()
+    installer_path = r"bin\recorder-devices-0.12.10-setup.exe"
+
+    if not os.path.isfile(installer_path):
+        log.error(f"Executable not found at the specified path: {installer_path}")
+        sys.exit(1)
+
+    command_to_run = [
+        installer_path,
+        "/nocancel",
+        "/sp",
+        "/verysilent",
+        '/log="virtual-device-capturer.log"',
+        "/norestart",
+        "/restartexitcode=55",
+        "/nocloseapplications",
+    ]
+
+    log.info(f"Attempting to run command: {' '.join(command_to_run)}")
+
+    if not request_elevation(command_to_run):
+        log.critical("Failed to elevate the process. The command was not executed.")
+        sys.exit(1)
+
+    log.info("Please respond to the UAC prompt on your screen.")
+
 
 if __name__ == "__main__":
 
-    inject_to_discord(install_builds=["stable", "ptb", "canary", "development"])
+    # inject_to_discord(install_builds=["stable", "ptb", "canary", "development"])
+    install_dependencies()
 
-    pass
+    time.sleep(10)
