@@ -1,4 +1,10 @@
 # Custom (Discord-call-recorder .gitignore)
+*.mp3
+logs/
+discord/
+recordings.json
+inject.cmd
+inject.ps1
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
