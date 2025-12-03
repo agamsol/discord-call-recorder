@@ -5,10 +5,11 @@ from dotenv import load_dotenv
 from flask import Flask, request, send_from_directory
 from utilities.recording import Recorder
 from utilities.CustomLogger import create_logger
+from utilities.recording import CoreFunctions
 
 load_dotenv()
 
-MEDIA_FOLDER = os.getenv("MEDIA_FOLDER", "discord")
+BASE_RECORDINGS_USER_PATH = os.path.join(os.environ['USERPROFILE'], os.getenv("BASE_RECORDINGS_USER_PATH"))
 
 DESKTOP_AUDIO_DEVICE = os.getenv("DESKTOP_AUDIO_DEVICE", "virtual-audio-capturer")
 MICROPHONE_DEVICE = os.getenv("MICROPHONE_DEVICE")
@@ -26,6 +27,7 @@ log = create_logger(
     alias="FLASK"
 )
 
+core = CoreFunctions()
 app = Flask(__name__)
 CORS(app)
 discord_stable = Recorder()
@@ -145,5 +147,7 @@ def flask_leave():
 
 if __name__ == "__main__":
 
+    core.inject_to_discord(install_builds=["stable"])
+
     log.info(f"Starting Flask app on {FLASK_HOST}:{FLASK_PORT}\n\tDevices that will be recorded are ->\n\tMicrophone: {MICROPHONE_DEVICE}\n\tDesktop Audio: {DESKTOP_AUDIO_DEVICE}")
-    app.run(host="0.0.0.0", port=49151)
+    app.run(host=FLASK_HOST, port=FLASK_PORT)

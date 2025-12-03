@@ -1,0 +1,14 @@
+[project]
+name = "discord-call-recorder"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "colorama>=0.4.6",
+    "flask>=3.1.2",
+    "flask-cors>=6.0.1",
+    "pyinstaller>=6.17.0",
+    "python-dotenv>=1.2.1",
+    "pywin32>=311",
+]

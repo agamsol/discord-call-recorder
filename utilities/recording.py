@@ -10,7 +10,28 @@ DESKTOP_AUDIO_DEVICE = os.getenv("DESKTOP_AUDIO_DEVICE", "virtual-audio-capturer
 MICROPHONE_DEVICE = os.getenv("MICROPHONE_DEVICE")
 
 AUDIO_QUALITY = os.getenv("AUDIO_QUALITY", "2")
+FFMPEG_EXECUTABLE_PATH = os.getenv("FFMPEG_EXECUTABLE_PATH", "ffmpeg")
 ADDITIONAL_FFMPEG_OPTIONS = os.getenv("ADDITIONAL_FFMPEG_OPTIONS")
+DISCORD_BUILDS = {
+    "stable": {
+        "name": "Stable Discord",
+        "path": os.path.join(os.getenv("LOCALAPPDATA"), "Discord"),
+        "executable": "Discord.exe"
+    },
+    "ptb": {
+        "name": "Discord Ptb",
+        "path": os.path.join(os.getenv("LOCALAPPDATA"), "DiscordPTB"),
+        "executable": "DiscordPTB.exe"
+    },
+    "canary": {
+        "name": "Discord Canary",
+        "path": os.path.join(os.getenv("LOCALAPPDATA"), "DiscordCanary"),
+        "executable": "DiscordCanary.exe"
+    }
+}
+
+plugin_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'record_trigger.plugin.js')
+appdata_path = os.path.join(os.getenv("APPDATA"), "discord_call_recorder")
 
 log = create_logger(
     log_date_format="%d-%m-%Y %H:%M:%S",
@@ -19,6 +40,61 @@ log = create_logger(
     logger_name="discord_call_recorder_core_module",
     alias="RECORDER"
 )
+
+
+class CoreFunctions:
+
+    def __init__(self):
+        pass
+
+    @staticmethod
+    def inject_to_discord(install_builds: list = None):
+
+        if not os.path.exists(plugin_path):
+
+            log.error(f"Failed to find the record_trigger plugin at '{plugin_path}'")
+            return
+
+        for build_name in install_builds:
+
+            if build_name is None or DISCORD_BUILDS.get(build_name) is None:
+
+                log.warning(f"Skipping unknown discord build '{build_name}'")
+                continue
+
+            name = DISCORD_BUILDS[build_name]["name"]
+            path = DISCORD_BUILDS[build_name]["path"]
+
+            log.debug(f"* ({name}) You requested to inject  . . .")
+
+            folders = [f for f in os.listdir(path) if os.path.isdir(os.path.join(path, f))]
+
+            for folder in folders:
+
+                if not folder.startswith("app-"):
+                    continue
+
+                full_injection_path = os.path.join(path, folder, 'modules', 'discord_desktop_core-1', 'discord_desktop_core', 'index.js')
+
+                if os.path.exists(full_injection_path):
+
+                    log.info(f"({name}) Injecting call recorder")
+                    log.debug(f"({name}) Full injection path: {full_injection_path}")
+
+                    content = f"""require('{plugin_path.replace("\\", "\\\\")}')\n\nmodule.exports = require('./core.asar');"""
+
+                    with open(full_injection_path, 'w', encoding='utf-8') as f:
+                        f.write(content)
+
+                    log.info(f"({name}) Successfully injected call recorder.")
+
+                else:
+
+                    log.error(f"({name}) Failed to find a proper installation at {full_injection_path}")
+
+        log.info("Injecttion process completed")
+
+        return
 
 
 class Recorder:
@@ -79,16 +155,17 @@ class Recorder:
 
         os.makedirs(base_path, exist_ok=True)
         recording_path = os.path.join(base_path, output_filename)
+        log.info(f"{recording_path=}")
 
         ffmpeg_command = [
-            'ffmpeg',
+            FFMPEG_EXECUTABLE_PATH,
             '-f', 'dshow', '-i', f'audio={MICROPHONE_DEVICE}',
             '-f', 'dshow', '-i', f'audio={DESKTOP_AUDIO_DEVICE}',
             '-filter_complex', '[0:a][1:a]amerge=inputs=2[a]',
             '-map', '[a]',
             '-vn',
             '-c:a', 'libmp3lame',
-            '-q:a', AUDIO_QUALITY,                                 # Set VBR quality (0=best, 9=worst)
+            '-q:a', AUDIO_QUALITY,
             recording_path
         ]
 
