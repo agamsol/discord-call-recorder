@@ -4,7 +4,13 @@ import subprocess
 from dotenv import load_dotenv
 from utilities.CustomLogger import create_logger
 
-load_dotenv()
+if not os.path.exists("config.env"):
+
+    print('ERROR: Please make sure that you have a "config.env" file available')
+
+    input("\nPress ENTER to exit this window!")
+
+load_dotenv("config.env")
 
 DESKTOP_AUDIO_DEVICE = os.getenv("DESKTOP_AUDIO_DEVICE", "virtual-audio-capturer")
 MICROPHONE_DEVICE = os.getenv("MICROPHONE_DEVICE")
@@ -12,6 +18,8 @@ MICROPHONE_DEVICE = os.getenv("MICROPHONE_DEVICE")
 AUDIO_QUALITY = os.getenv("AUDIO_QUALITY", "2")
 FFMPEG_EXECUTABLE_PATH = os.getenv("FFMPEG_EXECUTABLE_PATH", "ffmpeg")
 ADDITIONAL_FFMPEG_OPTIONS = os.getenv("ADDITIONAL_FFMPEG_OPTIONS")
+BASE_RECORDINGS_USER_PATH = os.path.join(os.environ['USERPROFILE'], os.getenv("BASE_RECORDINGS_USER_PATH"))
+
 DISCORD_BUILDS = {
     "stable": {
         "name": "Stable Discord",
@@ -149,9 +157,9 @@ class Recorder:
 
         if guild_id == "@me":
 
-            base_path = os.path.join("discord", "DMs", str(channel_id))
+            base_path = os.path.join(BASE_RECORDINGS_USER_PATH, "discord", "DMs", str(channel_id))
         else:
-            base_path = os.path.join("discord", "guilds", str(guild_id), "channels", str(channel_id))
+            base_path = os.path.join(BASE_RECORDINGS_USER_PATH, "discord", "guilds", str(guild_id), "channels", str(channel_id))
 
         os.makedirs(base_path, exist_ok=True)
         recording_path = os.path.join(base_path, output_filename)

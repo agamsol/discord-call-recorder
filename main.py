@@ -7,9 +7,14 @@ from utilities.recording import Recorder
 from utilities.CustomLogger import create_logger
 from utilities.recording import CoreFunctions
 
-load_dotenv()
+if not os.path.exists("config.env"):
 
-BASE_RECORDINGS_USER_PATH = os.path.join(os.environ['USERPROFILE'], os.getenv("BASE_RECORDINGS_USER_PATH"))
+    print('ERROR: Please make sure that you have a "config.env" file available')
+
+    input("\nPress ENTER to exit this window!")
+
+load_dotenv("config.env")
+
 
 DESKTOP_AUDIO_DEVICE = os.getenv("DESKTOP_AUDIO_DEVICE", "virtual-audio-capturer")
 MICROPHONE_DEVICE = os.getenv("MICROPHONE_DEVICE")
@@ -82,14 +87,14 @@ def request_recording(filename):
             print(f"An unexpected error occurred: {e}")
 
         try:
-            os.remove(os.path.join(MEDIA_FOLDER, filename))
+            os.remove(os.path.join(filename))
 
         except FileNotFoundError:
             return {"message": "Recording not found."}, 404
 
         return {"message": "Recording deleted successfully."}, 200
 
-    return send_from_directory(MEDIA_FOLDER, filename)
+    return send_from_directory(filename)
 
 
 @app.route("/join", methods=["POST", "OPTIONS"])
