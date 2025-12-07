@@ -12,7 +12,7 @@ Applying client modifications or "self-botting" (automating a user account)
 when you join and leave a discord call your client sends a request to a localserver that's running in background. recording your desktop audio and microphone and saving the records to the documents folder on your computer.
 > PS. Stable discord is the only supported build for this release!
 
-# ⚙️ Installation And Deployment Process (Version Pre-0.1)
+## ⚙️ Installation And Deployment Process (Version Pre-0.1)
 - Clone the [repository](https://github.com/agamsol/discord-call-recorder.git)
 `git clone https://github.com/agamsol/discord-call-recorder.git`
 - install the virtual-audio-capturer driver _(for capturing desktop audio - aka person you are calling with)_:
@@ -20,7 +20,7 @@ run `install_virtual_audio_capturer.cmd` **As administrator** under `\bin\instal
 - run `choose_audio_device.exe` and choose your microphone from the list
 - run `main.exe` _(kill discord.exe and start again if running)_
 
-# 🌅 Adding to startup (Optional)
+## 🌅 Adding to startup (Optional)
 - Create a shortcut of `main.exe` and put that in the following directory
 - `%appdata%\Microsoft\Windows\Start Menu\Programs\Startup`
 
