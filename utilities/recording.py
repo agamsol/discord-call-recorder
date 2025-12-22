@@ -1,6 +1,7 @@
 import os
 import json
 import subprocess
+from typing import Literal
 from dotenv import load_dotenv
 from utilities.CustomLogger import create_logger
 
@@ -15,6 +16,7 @@ load_dotenv("config.env")
 DESKTOP_AUDIO_DEVICE = os.getenv("DESKTOP_AUDIO_DEVICE", "virtual-audio-capturer")
 MICROPHONE_DEVICE = os.getenv("MICROPHONE_DEVICE")
 
+RECORDING_EXTENSION: Literal["mkv", "mp3"] = os.getenv("RECORDING_EXTENSION", "mkv")
 AUDIO_QUALITY = os.getenv("AUDIO_QUALITY", "2")
 FFMPEG_EXECUTABLE_PATH = os.getenv("FFMPEG_EXECUTABLE_PATH", "ffmpeg")
 ADDITIONAL_FFMPEG_OPTIONS = os.getenv("ADDITIONAL_FFMPEG_OPTIONS")
@@ -153,7 +155,7 @@ class Recorder:
         channel_id = body.get('channel_id')
         channel_name: str = body.get('channel_name')
 
-        output_filename = f"recording_{timestamp}-{channel_id}.mp3"
+        output_filename = f"recording_{timestamp}-{channel_id}." + RECORDING_EXTENSION
 
         if guild_id == "@me":
 
@@ -176,6 +178,9 @@ class Recorder:
             '-q:a', AUDIO_QUALITY,
             recording_path
         ]
+
+        if RECORDING_EXTENSION == "mkv":
+            ffmpeg_command.extend(['-f', 'matroska'])
 
         log.info(f"""Starting to record -> Listening to devices
 \tDiscord Build: {body.get('build')}

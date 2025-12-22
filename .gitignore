@@ -6,7 +6,7 @@ recordings.json
 inject.cmd
 inject.ps1
 bin/
-compile.cmd
+!compile.cmd
 *.log
 
 # Byte-compiled / optimized / DLL files
