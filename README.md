@@ -1,4 +1,4 @@
-# Discord Call Recorder 0.2 (Discord Audio Recorder) - Pre-Release
+# Discord Call Recorder 0.2 (Discord Audio Recorder)
 Automatically record discord calls on PMs, DM Groups and even guilds (servers)
 
 ### ⚠️ DISCLAIMER: USE AT YOUR OWN RISK
@@ -14,7 +14,7 @@ Applying client modifications or "self-botting" (automating a user account)
 when you join and leave a discord call your client sends a request to a localserver that's running in background. recording your desktop audio and microphone and saving the records to the documents folder on your computer.
 > PS. Stable discord is the only supported build for this release!
 
-## ⚙️ Installation And Deployment Process (Version Pre-0.1)
+## ⚙️ Installation And Deployment Process (0.2)
 - Clone the [repository](https://github.com/agamsol/discord-call-recorder.git)
 `git clone https://github.com/agamsol/discord-call-recorder.git`
 - install the virtual-audio-capturer driver _(for capturing desktop audio - aka person you are calling with)_:
