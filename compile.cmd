@@ -1,2 +1,2 @@
-pyinstaller main.py --onefile --add-data "utilities;utilities" --icon=src\icon.ico
+pyinstaller main.py --onefile --add-data "utilities;utilities" --add-data "bin;bin" --icon=src\icon.ico
 

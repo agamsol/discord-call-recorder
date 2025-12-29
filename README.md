@@ -1,4 +1,4 @@
-# Discord Call Recorder 0.2 (Discord Audio Recorder)
+# Discord Call Recorder 0.3 (Discord Audio Recorder)
 Automatically record discord calls on PMs, DM Groups and even guilds (servers)
 
 ### ⚠️ DISCLAIMER: USE AT YOUR OWN RISK
@@ -14,7 +14,7 @@ Applying client modifications or "self-botting" (automating a user account)
 when you join and leave a discord call your client sends a request to a localserver that's running in background. recording your desktop audio and microphone and saving the records to the documents folder on your computer.
 > PS. Stable discord is the only supported build for this release!
 
-## ⚙️ Installation And Deployment Process (0.2)
+## ⚙️ Installation And Deployment Process (0.3)
 - Clone the [repository](https://github.com/agamsol/discord-call-recorder.git)
 `git clone https://github.com/agamsol/discord-call-recorder.git`
 - install the virtual-audio-capturer driver _(for capturing desktop audio - aka person you are calling with)_:
@@ -28,10 +28,21 @@ run `install_virtual_audio_capturer.cmd` **As administrator** under `\bin\instal
 
 Feel free to report any bugs and don't forget to give a star if you are enjoying this project 💖
 
+
+## 📰 Whats new in version 0.3
+- Fixed a bug that crashes the application when swapping a call (fast join and leave)
+- Syncronos print caused delay at printing logs (switched to the logger library)
+
+<details>
+
+<summary>View older versions</summary>
+
 ## 📰 Whats new in version 0.2
 1. Patched the latest HTML Class element changes (Critical)
 2. Saving the current record even on a restart/crash (by changing the format to mkv)
 3. Pause & Resume the recording without leaving the call
+
+</details>
 
 ## 🙏 Thanks to the people that made this possible
 - Thanks to [Roger Pack](https://github.com/rdp) for providing the amazing [virtual-audio-capture driver](https://github.com/rdp/virtual-audio-capture-grabber-device)

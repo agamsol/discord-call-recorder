@@ -125,13 +125,13 @@ class Recorder:
                 if isinstance(loaded_data, list):
                     data_list = loaded_data
                 else:
-                    print(f"Warning: File '{filename}' contained valid JSON that was not a list. Starting a new list.")
+                    log.warning(f"Warning: File '{filename}' contained valid JSON that was not a list. Starting a new list.")
 
         except FileNotFoundError:
-            print(f"File '{filename}' not found. A new file will be created.")
+            log.warning(f"File '{filename}' not found. A new file will be created.")
 
         except json.JSONDecodeError:
-            print(f"Warning: File '{filename}' is empty or contains invalid JSON. Starting a new list.")
+            log.warning(f"Warning: File '{filename}' is empty or contains invalid JSON. Starting a new list.")
 
         data_list.append(data_to_append)
 
@@ -139,15 +139,14 @@ class Recorder:
 
             with open(filename, 'w', encoding='utf-8') as f:
                 json.dump(data_list, f, indent=4, ensure_ascii=False)
-            print(f"Successfully appended data to {filename}")
 
         except IOError as e:
-            print(f"An error occurred while writing to the file: {e}")
+            log.error(f"An error occurred while writing to the file: {e}")
 
     def start_recording(self, body: dict):
 
         if self.ongoing_recording:
-            print("Recording is already in progress.")
+            log.warning("Recording is already in progress.")
             return
 
         timestamp = body.get('timestamp')
@@ -224,7 +223,17 @@ class Recorder:
             log.warning("No recording is currently in progress.")
             return
 
-        self.process.communicate(b'q')
+        try:
+
+            self.process.communicate(b'q')
+
+            log.info("Recording has been successfully stopped.")
+
+        except AttributeError:
+
+            log.error("Failed to stop the recording process. Are you sure a recording was started?")
+
+            return
 
         self.ongoing_recording = False
         self.process = None
