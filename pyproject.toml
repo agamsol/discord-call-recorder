@@ -1,7 +1,7 @@
 [project]
 name = "discord-call-recorder"
-version = "0.1.0"
-description = "Add your description here"
+version = "0.4"
+description = "Automatically record discord calls on join/leave events (discord audio recorder)"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [

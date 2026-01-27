@@ -1,5 +1,6 @@
 import os
 import json
+import shutil
 import subprocess
 from typing import Literal
 from dotenv import load_dotenv
@@ -60,50 +61,58 @@ class CoreFunctions:
     @staticmethod
     def inject_to_discord(install_builds: list = None):
 
-        if not os.path.exists(plugin_path):
+        if not os.path.exists(BASE_RECORDINGS_USER_PATH):
+            os.makedirs(BASE_RECORDINGS_USER_PATH)
 
-            log.error(f"Failed to find the record_trigger plugin at '{plugin_path}'")
+        permanent_plugin_path = os.path.join(BASE_RECORDINGS_USER_PATH, 'record_trigger.plugin.js')
+
+        if os.path.exists(plugin_path) and plugin_path != permanent_plugin_path:
+            shutil.copy2(plugin_path, permanent_plugin_path)
+            log.info(f"Plugin stored permanently at: {permanent_plugin_path}")
+
+        if not os.path.exists(permanent_plugin_path):
+            log.error(f"Failed to find the record_trigger plugin at '{permanent_plugin_path}'")
             return
 
         for build_name in install_builds:
-
             if build_name is None or DISCORD_BUILDS.get(build_name) is None:
-
                 log.warning(f"Skipping unknown discord build '{build_name}'")
                 continue
 
             name = DISCORD_BUILDS[build_name]["name"]
             path = DISCORD_BUILDS[build_name]["path"]
 
-            log.debug(f"* ({name}) You requested to inject  . . .")
+            log.debug(f"* ({name}) You requested to inject . . .")
 
             folders = [f for f in os.listdir(path) if os.path.isdir(os.path.join(path, f))]
 
             for folder in folders:
-
                 if not folder.startswith("app-"):
                     continue
 
                 full_injection_path = os.path.join(path, folder, 'modules', 'discord_desktop_core-1', 'discord_desktop_core', 'index.js')
 
                 if os.path.exists(full_injection_path):
-
                     log.info(f"({name}) Injecting call recorder")
-                    log.debug(f"({name}) Full injection path: {full_injection_path}")
 
-                    content = f"""require('{plugin_path.replace("\\", "\\\\")}')\n\nmodule.exports = require('./core.asar');"""
+                    js_path = permanent_plugin_path.replace("\\", "\\\\")
+
+                    content = f"""try {{
+    require('{js_path}');
+}} catch (e) {{
+    console.error("Plugin failed to load, but starting Discord anyway:", e);
+}}
+
+module.exports = require('./core.asar');"""
 
                     with open(full_injection_path, 'w', encoding='utf-8') as f:
                         f.write(content)
 
                     log.info(f"({name}) Successfully injected call recorder.")
-
                 else:
+                    log.warning(f"({name}) Failed to find a proper installation at {full_injection_path}")
 
-                    log.error(f"({name}) Failed to find a proper installation at {full_injection_path}")
-
-        log.info("Injecttion process completed")
-
+        log.info("Injection process completed")
         return
 
 

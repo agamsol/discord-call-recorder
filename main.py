@@ -152,7 +152,7 @@ def flask_leave():
 
 if __name__ == "__main__":
 
-    core.inject_to_discord(install_builds=["stable"])
+    core.inject_to_discord(install_builds=DISCORD_BUILDS.split(", "))
 
     log.info(f"Starting Flask app on {FLASK_HOST}:{FLASK_PORT}\n\tDevices that will be recorded are ->\n\tMicrophone: {MICROPHONE_DEVICE}\n\tDesktop Audio: {DESKTOP_AUDIO_DEVICE}")
     app.run(host=FLASK_HOST, port=FLASK_PORT)
