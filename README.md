@@ -1,5 +1,14 @@
-# Discord Call Recorder 0.4 (Discord Audio Recorder)
+# Discord Call Recorder 0.5 (Discord Audio Recorder)
 Automatically record discord calls on PMs, DM Groups and even guilds (servers)
+
+<div align="center">
+
+![Python Version](https://img.shields.io/badge/python-3.13%2B-blue?style=for-the-badge&logo=python&logoColor=white)
+![Platform](https://img.shields.io/badge/platform-windows-informational?style=for-the-badge&logo=windows&logoColor=white)
+![GitHub stars](https://img.shields.io/github/stars/agamsol/discord-call-recorder?style=for-the-badge)
+![GitHub issues](https://img.shields.io/github/issues/agamsol/discord-call-recorder?style=for-the-badge)
+
+</div>
 
 ### ⚠️ DISCLAIMER: USE AT YOUR OWN RISK
 This project is a proof-of-concept for educational purposes only. It is a direct violation of [Discord's TOS](https://discord.com/terms) and should not be used.
@@ -14,7 +23,7 @@ Applying client modifications or "self-botting" (automating a user account)
 when you join and leave a discord call your client sends a request to a localserver that's running in background. recording your desktop audio and microphone and saving the records to the documents folder on your computer.
 > PS. Stable discord is the only supported build for this release!
 
-## ⚙️ Installation And Deployment Process (0.4)
+## ⚙️ Installation And Deployment Process (0.5)
 - Clone the [repository](https://github.com/agamsol/discord-call-recorder.git)
 `git clone https://github.com/agamsol/discord-call-recorder.git`
 - install the virtual-audio-capturer driver _(for capturing desktop audio - aka person you are calling with)_:
@@ -29,15 +38,23 @@ run `install_virtual_audio_capturer.cmd` **As administrator** under `\bin\instal
 Feel free to report any bugs and don't forget to give a star if you are enjoying this project 💖
 
 
+## 📰 Whats new in version 0.5
+- Added automatic plugin updates from GitHub (configurable via `config.env`)
+    - Set `FETCH_PLUGIN_UPDATES_FROM_GITHUB` to a raw URL to enable auto-plugin-updates on startup. (not backend updates)
+    > PS. This is done because discord updates elements very often and people end up running backend with outdated plugin
+- Major: Updated Discord Classes
+
+
+<details>
+
+<summary>View older versions</summary>
+
+
 ## 📰 Whats new in version 0.4
 - Fixed discord startup with windows throwing an error (added handler to the injector)
 - More builds are now supported `stable`, `ptb`, `canary`
 
     Modify under `config.env` (example: `DISCORD_BUILDS=stable, ptb, canary`)
-
-<details>
-
-<summary>View older versions</summary>
 
 ## 📰 Whats new in version 0.3
 - Fixed a bug that crashes the application when swapping a call (fast join and leave)

@@ -2,6 +2,8 @@ import os
 import json
 import shutil
 import subprocess
+import hashlib
+import urllib.request
 from typing import Literal
 from dotenv import load_dotenv
 from utilities.CustomLogger import create_logger
@@ -21,6 +23,7 @@ RECORDING_EXTENSION: Literal["mkv", "mp3"] = os.getenv("RECORDING_EXTENSION", "m
 AUDIO_QUALITY = os.getenv("AUDIO_QUALITY", "2")
 FFMPEG_EXECUTABLE_PATH = os.getenv("FFMPEG_EXECUTABLE_PATH", "ffmpeg")
 ADDITIONAL_FFMPEG_OPTIONS = os.getenv("ADDITIONAL_FFMPEG_OPTIONS")
+FETCH_PLUGIN_UPDATES_FROM_GITHUB = os.getenv("FETCH_PLUGIN_UPDATES_FROM_GITHUB")
 BASE_RECORDINGS_USER_PATH = os.path.join(os.environ['USERPROFILE'], os.getenv("BASE_RECORDINGS_USER_PATH"))
 
 DISCORD_BUILDS = {
@@ -64,7 +67,7 @@ class CoreFunctions:
         if not os.path.exists(BASE_RECORDINGS_USER_PATH):
             os.makedirs(BASE_RECORDINGS_USER_PATH)
 
-        permanent_plugin_path = os.path.join(BASE_RECORDINGS_USER_PATH, 'record_trigger.plugin.js')
+        permanent_plugin_path = os.path.join(BASE_RECORDINGS_USER_PATH, 'discord', 'record_trigger.plugin.js')
 
         if os.path.exists(plugin_path) and plugin_path != permanent_plugin_path:
             shutil.copy2(plugin_path, permanent_plugin_path)
@@ -73,6 +76,37 @@ class CoreFunctions:
         if not os.path.exists(permanent_plugin_path):
             log.error(f"Failed to find the record_trigger plugin at '{permanent_plugin_path}'")
             return
+
+        if FETCH_PLUGIN_UPDATES_FROM_GITHUB:
+            try:
+                log.info("Checking for plugin updates...")
+                update_url = FETCH_PLUGIN_UPDATES_FROM_GITHUB
+
+                if "github.com" in update_url and "/blob/" in update_url:
+                    update_url = update_url.replace("github.com", "raw.githubusercontent.com").replace("/blob/", "/")
+
+                with urllib.request.urlopen(update_url) as response:
+                    if response.status == 200:
+                        new_content = response.read()
+                        
+                        current_content = b""
+                        if os.path.exists(permanent_plugin_path):
+                            with open(permanent_plugin_path, 'rb') as f:
+                                current_content = f.read()
+                        
+                        new_hash = hashlib.sha256(new_content).hexdigest()
+                        current_hash = hashlib.sha256(current_content).hexdigest()
+
+                        if new_hash != current_hash:
+                            with open(permanent_plugin_path, 'wb') as f:
+                                f.write(new_content)
+                            log.info("Plugin updated successfully from GitHub.")
+                        else:
+                            log.info("Plugin is up to date.")
+                    else:
+                        log.warning(f"Failed to fetch plugin update. Status code: {response.status}")
+            except Exception as e:
+                log.error(f"Error checking for plugin updates: {e}")
 
         for build_name in install_builds:
             if build_name is None or DISCORD_BUILDS.get(build_name) is None:

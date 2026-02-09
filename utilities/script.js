@@ -1,4 +1,4 @@
-(function() {
+(function () {
     'use strict';
 
     if (window.stopVoiceListener) {
@@ -17,7 +17,7 @@
 
         // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= CRITICAL SECTION -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
         // Element that holds the user area (where voice status is shown)
-        const USER_AREA_SELECTOR = '[aria-label="User area"]';
+        const USER_AREA_SELECTOR = '[aria-label="User status and settings"]';
 
         // Element that points on "Voice Connected" indicator
         const CONNECTED_INDICATOR_SELECTOR = '[class*="rtcConnectionStatusConnected"]';
@@ -128,7 +128,7 @@
                                         const circles = btn.querySelectorAll('.circle');
 
                                         if (isRecordingPaused) {
-                                            if(dot) dot.classList.add('paused');
+                                            if (dot) dot.classList.add('paused');
                                             circles.forEach(c => c.classList.add('paused'));
 
                                             sendWebhook('leave', {
@@ -138,7 +138,7 @@
                                                 timestamp: Date.now()
                                             });
                                         } else {
-                                            if(dot) dot.classList.remove('paused');
+                                            if (dot) dot.classList.remove('paused');
                                             circles.forEach(c => c.classList.remove('paused'));
 
                                             sendWebhook('join', {
@@ -218,7 +218,7 @@
 
         const mainIntervalId = setInterval(checkUiForVoiceState, 1000);
 
-        window.stopVoiceListener = function() {
+        window.stopVoiceListener = function () {
             if (mainIntervalId) clearInterval(mainIntervalId);
             const indicator = document.getElementById(INDICATOR_ID);
             if (indicator) indicator.remove();
@@ -269,7 +269,7 @@
 
     function findModule(filter) {
         if (!window.webpackChunkdiscord_app) return null;
-        const modules = window.webpackChunkdiscord_app.push([ [Math.random()], {}, (e) => e ]);
+        const modules = window.webpackChunkdiscord_app.push([[Math.random()], {}, (e) => e]);
         window.webpackChunkdiscord_app.pop();
         for (const id in modules.c) {
             if (modules.c[id] && modules.c[id].exports) {
@@ -277,7 +277,7 @@
                 try {
                     if (module && filter(module)) return module;
                     if (module.default && filter(module.default)) return module.default;
-                } catch (e) {}
+                } catch (e) { }
             }
         }
         return null;

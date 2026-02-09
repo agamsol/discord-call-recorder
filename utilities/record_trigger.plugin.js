@@ -8,7 +8,7 @@
  * 2. Copy and paste this ENTIRE code block at the VERY END of the file. (or require() its full file path)
  * 3. Save the file and restart Discord completely.
  */
-const { app, BrowserWindow} = require("electron");
+const { app, BrowserWindow } = require("electron");
 
 const listenerScript = `
 (function() {
@@ -30,7 +30,8 @@ const listenerScript = `
 
         // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= CRITICAL SECTION -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
         // Element that holds the user area (where voice status is shown)
-        const USER_AREA_SELECTOR = '[aria-label="User area"]';
+        const USER_AREA_SELECTOR = '[aria-label="User status and settings"]';
+        // old selector: [aria-label="User area"]
 
         // Element that points on "Voice Connected" indicator
         const CONNECTED_INDICATOR_SELECTOR = '[class*="rtcConnectionStatusConnected"]';
